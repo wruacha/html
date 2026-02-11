@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Love 💖</title>
+
+<!-- Valentine Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- GENERAL ---------- */
+body {
+    margin: 0;
+    padding: 10px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+    font-family: 'Dancing Script', cursive;
+}
+
+.hidden { display: none; }
+
+.intro-text, .loading-text, .typing, .final {
+    font-family: 'Great Vibes', cursive;
+    font-size: 6vw; /* responsive font */
+    line-height: 1.2em;
+    padding: 10px;
+    min-height: auto;
+    color: black;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 5vw;
+    border-radius: 30px;
+    border: none;
+    background: #e63946;
+    color: white;
+    cursor: pointer;
+    font-family: 'Dancing Script', cursive;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* ---------- FINAL IMAGE ANIMATION ---------- */
+#finalImg, #butFirstImg {
+    width: 250px;
+    border-radius: 15px;
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+#finalImg.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.loader {
+    width: 70%;
+    height: 8px;
+    background: rgba(255,255,255,.3);
+    border-radius: 10px;
+    margin: 30px auto;
+    overflow: hidden;
+}
+
+.loader span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: white;
+    animation: load 3s forwards;
+}
+
+@keyframes load { to { width: 100%; } }
+
+.game {
+    background: linear-gradient(145deg, #fff0f5, #ffe4e1); /* soft pink gradient */
+    color: #444;
+    width: 95%;
+    max-width: 500px; /* larger */
+    padding: 30px;
+    border-radius: 30px; /* more rounded */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25), 0 0 20px rgba(255, 105, 180, 0.3); /* lifted + pink glow */
+    animation: fadeIn 1s;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3), 0 0 30px rgba(255, 105, 180, 0.5);
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    color: #1b1b1b;
+    font-family: 'Great Vibes', cursive;
+    font-size: 7vw;
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.grid img {
+    width: 100%;
+    height: 160px; /* slightly taller */
+    border-radius: 20px;
+    object-fit: cover;
+    border: 2px solid rgba(255,105,180,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.grid img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(255,105,180,0.5);
+}
+
+.answer {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.answer div {
+    width: 44px;
+    height: 52px;
+    border-bottom: 4px solid #e63946;
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 52px;
+    font-family: 'Dancing Script', cursive;
+}
+
+
+.letters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+.letter {
+    width: 52px;              /* BIGGER */
+    height: 52px;
+    background: #e63946;
+    color: white;
+    font-size: 24px;          /* BIGGER text */
+    font-weight: bold;
+    border-radius: 14px;
+    line-height: 52px;
+    cursor: pointer;
+    font-family: 'Dancing Script', cursive;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    transition: transform 0.15s ease;
+}
+
+.letter:active {
+    transform: scale(0.92);
+}
+
+
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: fadeIn 0.5s ease;
+}
+
+.popup img {
+    width: 220px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.popup p {
+    font-family: 'Great Vibes', cursive;
+    font-size: 6vw;
+    color: white;
+    text-align: center;
+}
+
+
+#p1Popup {
+    display: none;  /* Ensure it's hidden */
+}
+
+
+/* ---------- EXTRA LARGE MOBILE BUTTONS ---------- */
+@media (max-width: 480px) {
+
+    /* Puzzle container – bigger & more breathing room */
+    .game {
+        width: 100%;
+        padding: 30px;
+        border-radius: 28px;
+    }
+    .letter {
+        width: 58px;
+        height: 58px;
+        font-size: 26px;
+        line-height: 58px;
+    }
+
+    .answer div {
+        width: 48px;
+        height: 58px;
+        font-size: 28px;
+        line-height: 58px;
+    }
+}
+
+
+    /* More spacing so it doesn’t feel cramped */
+    .letters {
+        gap: 18px;
+        margin-top: 24px;
+    }
+
+    .answer {
+        gap: 14px;
+        margin-top: 20px;
+    }
+
+     
+
+
+
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+    <div id="introText" class="intro-text"></div>
+    <button id="startBtn" class="hidden" onclick="goToLoading()">Begin</button>
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="hidden">
+    <div class="loading-text">Preparing something special for you…</div>
+    <div class="loader"><span></span></div>
+    <button onclick="showButFirstMsg()">Continue</button>
+</div>
+
+<!-- "BUT FIRST" MESSAGE PAGE -->
+<div id="butFirstMsg" class="hidden">
+  <div id="butFirstText" class="intro-text"></div>
+  <img id="butFirstImg" src="hmm.png" alt="Cute Image">
+</div>
+
+<!-- PUZZLE 1 -->
+<div id="p1" class="game hidden">
+<h1>It comes to my mind every time I look at you</h1>
+<div class="grid">
+<img src="p1_1.jpg"><img src="p1_2.jpg">
+<img src="p1_3.jpg"><img src="p1_4.jpg">
+</div>
+<div class="answer" id="a1"></div>
+<div class="letters" id="l1"></div>
+</div>
+
+<!-- PUZZLE 1 POPUP -->
+<div id="p1Popup" class="popup hidden">
+  <img src="popup.jpg" alt="Sweet Popup">
+  <p>You know me so well, hmm</p>
+</div>
+
+
+
+
+<!-- PUZZLE 2 -->
+<div id="p2" class="game hidden">
+<h1>I hope you know..</h1>
+<div class="grid">
+<img src="p2_1.png"><img src="p2_2.jpg">
+<img src="p2_3.png"><img src="p2_4.jpg">
+</div>
+<div class="answer" id="a2"></div>
+<div class="letters" id="l2"></div>
+<div id="t2" class="typing hidden"></div>
+</div>
+
+<!-- SWEET MESSAGE AFTER MYWIFE -->
+<div id="sweetMsg" class="hidden">
+  <div id="msgText" class="intro-text"></div>
+  <button id="msgBtn" class="hidden" onclick="next('sweetMsg','p3')">Continue</button>
+</div>
+
+<!-- PUZZLE 3 -->
+<div id="p3" class="game hidden">
+<h1>With all of my heart, I would like to ask..</h1>
+<div class="grid">
+<img src="p3_1.png"><img src="p3_2.jpg">
+<img src="p3_3.jpg"><img src="p3_4.png">
+</div>
+<div class="answer" id="a3"></div>
+<div class="letters" id="l3"></div>
+</div>
+
+<!-- FINAL SWEET PAGE -->
+<div id="finalPage" class="hidden" style="color:black; text-align:center;">
+  <div id="finalText" class="intro-text"></div>
+  <div id="finalQ2" class="final hidden" style="margin-top:20px;">
+    Will you be my Valentine? ^^
+  </div>
+  <img id="finalImg" src="cat.png" alt="Love Image">
+</div>
+
+<script>
+function typeText(el, text, speed, done) {
+    let i = 0;
+    const t = setInterval(() => {
+        el.textContent += text[i++];
+        if (i === text.length) { clearInterval(t); if(done) done(); }
+    }, speed);
+}
+
+// Intro typing
+typeText(
+    introText,
+    "Something special, just for you.\nA little game made with love.",
+    60,
+    () => startBtn.classList.remove("hidden")
+);
+
+function goToLoading() {
+    intro.classList.add("hidden");
+    loading.classList.remove("hidden");
+}
+
+function next(from,to){
+    document.getElementById(from).classList.add("hidden");
+    document.getElementById(to).classList.remove("hidden");
+}
+
+function setupPuzzle(answer, aBox, lBox, done) {
+    const a = document.getElementById(aBox);
+    const l = document.getElementById(lBox);
+    let cur = new Array(answer.length).fill(null);
+
+    // Create answer slots
+    answer.split("").forEach(() => a.appendChild(document.createElement("div")));
+
+    // Shuffle letters
+    const shuffled = answer.split("").sort(() => Math.random() - 0.5);
+
+    shuffled.forEach(ch => {
+        const b = document.createElement("div");
+        b.className = "letter";
+        b.textContent = ch;
+        l.appendChild(b);
+
+        b.onclick = () => {
+            const emptyIndex = cur.indexOf(null);
+            if (emptyIndex !== -1) {
+                cur[emptyIndex] = b;
+                a.children[emptyIndex].textContent = ch;
+                b.style.visibility = "hidden";
+
+                // 🔍 CHECK IF FULL AND CORRECT
+                if (cur.every(x => x)) {
+                    const spelled = cur.map(btn => btn.textContent).join("");
+                    if (spelled === answer) {
+                        done(); // ✅ ONLY proceed if correct
+                    }
+                }
+            }
+        };
+    });
+
+    // Allow removing letters
+    Array.from(a.children).forEach((box, i) => {
+        box.onclick = () => {
+            if (cur[i]) {
+                cur[i].style.visibility = "visible";
+                cur[i] = null;
+                box.textContent = "";
+            }
+        };
+    });
+}
+
+
+// Setup Puzzle 1
+setupPuzzle("GORGEOUS", "a1", "l1", () => {
+    const popup = document.getElementById("p1Popup");
+    const p1 = document.getElementById("p1");
+
+    // Hide Puzzle 1
+    p1.classList.add("hidden");
+
+    // Show popup
+    popup.style.display = "flex";
+    popup.classList.remove("hidden");
+
+    // After 2 seconds, hide popup and show Puzzle 2
+    setTimeout(() => {
+        popup.style.display = "none";
+        p2.classList.remove("hidden");
+    }, 2000);
+});
+
+
+// Puzzle 2 → auto to sweet message → then Puzzle 3
+setupPuzzle("MYWIFE","a2","l2",()=>{
+    p2.classList.add("hidden");
+    sweetMsg.classList.remove("hidden");
+
+    typeText(
+        msgText,
+        "Even miles apart, my heart never left you. Loving you from a distance only made my love for you grow stronger. You are my everything, baby.",
+        40,
+        () => {
+            setTimeout(() => next('sweetMsg','p3'), 3000);
+        }
+    );
+});
+
+// Puzzle 3 → auto to Final Page
+setupPuzzle("VALENTINE","a3","l3",()=>{
+    setTimeout(() => showFinalPage(), 800);
+});
+
+
+function showFinalPage() {
+    p3.classList.add("hidden");
+    finalPage.classList.remove("hidden");
+
+    typeText(
+        finalText,
+        "You are the love of my life. You are the one person who means more to me than anything else in this world and I can’t wait to create even more beautiful memories with you, baby.",
+        40,
+        () => {
+            // wait 3 seconds AFTER typing finishes
+            setTimeout(() => {
+                finalQ2.classList.remove("hidden");
+                finalImg.classList.add("show");
+            }, 3000);
+        }
+    );
+}
+
+
+// ---------- "BUT FIRST" PAGE ----------
+function showButFirstMsg() {
+    loading.classList.add("hidden");
+    butFirstMsg.classList.remove("hidden");
+    typeText(butFirstText, "But first, I have a question for you… hmm…", 40, () => {
+        butFirstImg.style.opacity = 1;
+        butFirstImg.style.transform = "translateY(0)";
+        // Automatically proceed after 3 seconds
+        setTimeout(() => next('butFirstMsg','p1'), 3000);
+    });
+}
+</script>
+</body>
+</html>
